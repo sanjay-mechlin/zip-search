@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Search, MapPin, Phone, Mail, Globe, Star, Clock, Shield, Users } from 'lucide-react'
+import { Search, MapPin, Phone, Mail, Star } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { ThemeToggle } from '@/components/theme-toggle'
-import { useTheme } from '@/components/theme-provider'
+import { ThemeToggle } from '@/components/theme-provider'
 
 interface Company {
   id: string
@@ -40,7 +39,6 @@ interface CompanyService {
   }
 }
 
-
 export default function Home() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -48,7 +46,6 @@ export default function Home() {
   const [companies, setCompanies] = useState<Company[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const { theme } = useTheme()
 
   // Search function that can be called directly
   const searchCompanies = async (zip: string) => {
@@ -130,7 +127,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero Section - Compact */}
+      {/* Hero Section */}
       <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
@@ -143,7 +140,7 @@ export default function Home() {
             </p>
           </div>
           
-          {/* Search Section - Prominent */}
+          {/* Search Section */}
           <Card className="max-w-3xl mx-auto mb-8 shadow-lg">
             <CardContent className="p-6">
               <form onSubmit={handleSearch} className="flex gap-4">

@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@supabase/supabase-js'
 
 export async function GET(request: NextRequest) {
   try {
+    // Check if environment variables are available
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.error('Missing Supabase environment variables')
+      return NextResponse.json({ error: 'Service configuration error' }, { status: 500 })
+    }
+
     const { searchParams } = new URL(request.url)
     const zipCode = searchParams.get('zip')
     const category = searchParams.get('category') || 'garage_doors'
@@ -10,6 +16,12 @@ export async function GET(request: NextRequest) {
     if (!zipCode) {
       return NextResponse.json({ error: 'ZIP code is required' }, { status: 400 })
     }
+
+    // Create Supabase client
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    )
 
     // Search for companies that serve the specified ZIP code
     const { data: companies, error } = await supabase
@@ -38,8 +50,20 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if environment variables are available
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.error('Missing Supabase environment variables')
+      return NextResponse.json({ error: 'Service configuration error' }, { status: 500 })
+    }
+
     const body = await request.json()
     const { name, description, phone, email, website, address, city, state, zip_codes, service_category } = body
+
+    // Create Supabase client
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    )
 
     const { data: company, error } = await supabase
       .from('companies')

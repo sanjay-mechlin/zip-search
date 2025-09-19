@@ -16,7 +16,7 @@ export async function PUT(
     const body = await request.json()
     const { custom_price, is_available } = body
 
-    const updateData: any = {}
+    const updateData: { custom_price?: number; is_available?: boolean } = {}
 
     if (custom_price !== undefined) updateData.custom_price = custom_price
     if (is_available !== undefined) updateData.is_available = is_available
